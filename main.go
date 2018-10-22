@@ -107,7 +107,7 @@ func authenticatedCheckHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(os.Stderr, "Authentication target is empty")
 		return
 	}
-	if isValidToken(authToken) {
+	if authToken != "" && isValidToken(authToken) {
 		w.WriteHeader(200)
 		fmt.Fprintf(w, "Authorized")
 		fmt.Fprintf(os.Stderr, "Authorized")

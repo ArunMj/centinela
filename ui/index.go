@@ -27,10 +27,13 @@ const IndexHTML = `
     // data['username'] = username
     // data['password'] = password
     // console.log(data);
-    domain = new URL(targetUrl).host
+    var url = new URL(targetUrl)
+    var domain = url.host + ":" + url.port
+    var formBody = "target=" + target + "&domain=" + domain + "&username=" + username + "&password=" + password
+    console.log("submit POST ", formBody)
     fetch("/authenticate", {
       method: 'post',
-      body: "target=" + target + "&domain=" + domain + "&username=" + username + "&password=" + password,
+      body: formBody,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       }

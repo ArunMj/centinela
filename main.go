@@ -56,11 +56,13 @@ func authenticateHandler(w http.ResponseWriter, r *http.Request) {
 
 	if ValidateLoginCredentials(username, password, target) {
 		// w.Header().Set("X-Centinela-Redirect-To", target)
+		token := GenerateToken(username, target)
+		fmt.Println("setting cookie @ " + domain + "with  token: " + token)
 		http.SetCookie(w,
 			&http.Cookie{
 				Name:   "centinela_auth_token",
 				Domain: domain,
-				Value:  GenerateToken(username, target),
+				Value:  token,
 			})
 
 		w.WriteHeader(http.StatusOK)
@@ -94,11 +96,12 @@ func loginPageHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func authenticatedCheckHandler(w http.ResponseWriter, r *http.Request) {
-	for k, v := range r.Header {
-		fmt.Println("k " + k + " v: " + v[0])
-	}
+	// for k, v := range r.Header {
+	// 	fmt.Println("k " + k + " v: " + v[0])
+	// }
 	authFor := r.Header.Get("X-Auth-For")
 	authToken := r.Header.Get("X-Auth-Token")
+	fmt.Println("auth request: AuthFor:"+authFor, " authToken:"+authToken)
 	// a, _ := r.Cookie("")
 	// a.Value()
 	if authFor == "" {
